@@ -127,7 +127,7 @@
     #fvtt-party-resources-status-bar ul li {
       color: white;
       display: table-cell;
-      float: left;
+      /* float: left; */
       font-size: 1rem;
       margin-right: 20px; }
       #fvtt-party-resources-status-bar ul li:hover {
@@ -207,5 +207,20 @@
   background-color: #f9eac2; }
   .resources.droppable .resource.source {
     opacity: 0.3; }
+
+.status-bar-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.status-bar-center {
+  display: flex;
+  justify-content: center;
+}
+
+.status-bar-right {
+  display: flex;
+  justify-content: flex-end;
+}
 
 /*# sourceMappingURL=../maps/init.css.map */

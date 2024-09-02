@@ -59,7 +59,9 @@ export default class ActorDnd5eResources {
   }
 
   static player_characters() {
-    return game.actors.filter((actor) => { return actor.type == 'character' })
+    const folderId = game.settings.get('fvtt-party-resources', 'directory_id');
+
+    return game.actors.filter((actor) => { return actor.type == 'character' && (!folderId || actor.folder?.id === folderId);})
   }
 
   static player_items(names) {

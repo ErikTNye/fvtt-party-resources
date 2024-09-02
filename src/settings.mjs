@@ -64,6 +64,28 @@ export default class ModuleSettings {
       onChange: value => window.pr.status_bar.render()
     });
 
+    this.add('status_bar_alignment', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignment'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint'),
+      default: 'center',
+      type: String,
+      isSelect: true,
+      choices: {
+        left: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentLeft'),
+        center: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentCenter'),
+        right: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentRight')
+      },
+      onChange: value => window.pr.status_bar.render()
+    });
+
+    this.add('directory_id', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.DirectoryID'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.DirectoryIDHint'),
+      default: '',
+      type: String,
+      onChange: value => window.location.reload()
+    });
+
     // TODO: status_bar_size
 
   }

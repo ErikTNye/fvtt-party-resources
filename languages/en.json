@@ -55,6 +55,13 @@
   "FvttPartyResources.GMSettingsForm.StatusBarLocation": "Change location of the status bar",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationHint": "Determines where the status bar gets drawn onto the game canvas.",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationAtBottom": "At the bottom",
-  "FvttPartyResources.GMSettingsForm.StatusBarLocationOnTop": "On top",
+  "FvttPartyResources.GMSettingsForm.StatusBarLocationOnTop": "Alignment of the Status Bar",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint": "Choose the alignment of the status bar (left, center, or right).",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentLeft": "Left side",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentRight": "Right side",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentCenter": "Center",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignment": "On top",
+  "FvttPartyResources.GMSettingsForm.DirectoryID": "Specify to only count characters from a specific Directory.",
+  "FvttPartyResources.GMSettingsForm.DirectoryIDHint": "Need to be set with the UUID of the Actor Directory, leaving it empty will count all characters.",
   "FvttPartyResources.Title": "Party Resources"
 }
