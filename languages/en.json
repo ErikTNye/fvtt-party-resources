@@ -61,7 +61,7 @@
   "FvttPartyResources.GMSettingsForm.StatusBarAlignmentRight": "Right side",
   "FvttPartyResources.GMSettingsForm.StatusBarAlignmentCenter": "Center",
   "FvttPartyResources.GMSettingsForm.StatusBarAlignment": "On top",
-  "FvttPartyResources.GMSettingsForm.DirectoryID": "Specify to only count characters from a specific Directory.",
+  "FvttPartyResources.GMSettingsForm.DirectoryID": "Specify to only count characters from a single Directory.",
   "FvttPartyResources.GMSettingsForm.DirectoryIDHint": "Need to be set with the UUID of the Actor Directory, leaving it empty will count all characters.",
   "FvttPartyResources.Title": "Party Resources"
 }
