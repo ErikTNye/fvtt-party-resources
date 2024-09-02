@@ -10,12 +10,15 @@
     {
       "name": "Kit",
       "discord": "wlonk#6479"
+    },
+    {
+      "name": "Erik Nye"
     }
   ],
-  "url": "https://github.com/davelens/fvtt-party-resources",
-  "manifest": "https://github.com/davelens/fvtt-party-resources/releases/latest/download/module.json",
-  "download": "https://github.com/davelens/fvtt-party-resources/releases/download/1.7.0/module.zip",
-  "version": "1.7.0",
+  "url": "https://github.com/ErikTNye/fvtt-party-resources",
+  "manifest": "https://github.com/ErikTNye/fvtt-party-resources/releases/download/1.7.1/module.json",
+  "download": "https://github.com/ErikTNye/fvtt-party-resources/releases/download/1.7.1/module.zip",
+  "version": "1.7.1",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion": "12",
   "compatibility": {
