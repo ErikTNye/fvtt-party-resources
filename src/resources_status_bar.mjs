@@ -28,9 +28,26 @@ export default class ResourcesStatusBar {
       $('footer#ui-bottom').append(status_bar)
     }
 
-    $('#fvtt-party-resources-status-bar').click(() => {
-      window.pr.dashboard.render(true, {focus: true})
-    })
+    const alignment = ModuleSettings.get('status_bar_alignment');
+    const statusBarElement = $('#fvtt-party-resources-status-bar');
+
+    statusBarElement.removeClass('status-bar-left status-bar-center status-bar-right');
+
+    switch (alignment) {
+      case 'left':
+        statusBarElement.addClass('status-bar-left');
+        break;
+      case 'center':
+        statusBarElement.addClass('status-bar-center');
+        break;
+      case 'right':
+        statusBarElement.addClass('status-bar-right');
+        break;
+    }
+
+    statusBarElement.click(() => {
+      window.pr.dashboard.render(true, { focus: true });
+    });
 
     $('.fvtt-party-resources-resource').on('click', event => {
       if (!game.user.isGM || (!event.ctrlKey && !event.metaKey)) {
