@@ -109,11 +109,25 @@
   top: 0;
   z-index: 9999; }
 
+#status-bar-container {
+  position: relative; 
+  width: 100%;
+  display: flex; 
+  align-items: center;
+}
+
 #fvtt-party-resources-status-bar {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 6px 10px;
   pointer-events: auto;
-  cursor: pointer; }
+  /* width: calc(100% - 400px);  */
+  cursor: pointer;
+  flex: 1;
+  align-items: center;
+  box-sizing: border-box;
+  transition: height 0.3s ease;
+  overflow: hidden;
+  margin-right: 40px; }
   #fvtt-party-resources-status-bar ul {
     list-style: none;
     margin: 0;
@@ -221,6 +235,43 @@
 .status-bar-right {
   display: flex;
   justify-content: flex-end;
+}
+
+
+#status-bar-contents {
+  transition: max-height 0.3s ease;
+}
+
+.collapsed #status-bar-contents {
+  max-height: 0;
+}
+
+.collapsed #fvtt-party-resources-status-bar {
+  max-height: 0;
+  padding: 0;
+}
+
+.collapsed {
+  visibility: collapse;
+  justify-content: flex-end;
+}
+
+#status-bar-toggle {
+  cursor: pointer;
+  position: absolute;
+  height: 34px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10; 
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px; 
+  pointer-events: auto;
+}
+
+.collapsed #status-bar-toggle i {
+  transform: rotate(180deg); /* Rotate caret icon when collapsed */
 }
 
 /*# sourceMappingURL=../maps/init.css.map */

@@ -55,7 +55,7 @@
   "FvttPartyResources.GMSettingsForm.StatusBarLocation": "Change location of the status bar",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationHint": "Determines where the status bar gets drawn onto the game canvas.",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationAtBottom": "At the bottom",
-  "FvttPartyResources.GMSettingsForm.StatusBarLocationOnTop": "Alignment of the Status Bar",
+  "FvttPartyResources.GMSettingsForm.StatusBarLocationOnTop": "On top",
   "FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint": "Choose the alignment of the status bar (left, center, or right).",
   "FvttPartyResources.GMSettingsForm.StatusBarAlignmentLeft": "Left side",
   "FvttPartyResources.GMSettingsForm.StatusBarAlignmentRight": "Right side",

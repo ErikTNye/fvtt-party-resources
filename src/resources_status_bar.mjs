@@ -45,6 +45,16 @@ export default class ResourcesStatusBar {
         break;
     }
 
+    adjustStatusBarWidth();
+
+    $('#status-bar-toggle').click(() => {
+      event.stopPropagation();
+      statusBarElement.toggleClass('collapsed');
+
+      const caretIcon = $('#status-bar-toggle i');
+      caretIcon.toggleClass('fa-caret-up fa-caret-down');
+    });
+
     statusBarElement.click(() => {
       window.pr.dashboard.render(true, { focus: true });
     });

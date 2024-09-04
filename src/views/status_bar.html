@@ -1,23 +1,29 @@
 {{#if status_bar }}
   {{#if resources }}
-    <section id="fvtt-party-resources-status-bar">
+  <div id="status-bar-container">
 
-      <ul class="clearfix">
-        {{#each resources as |r|}}
-          {{#if visible_for_players }}
-            <li class="flexrow fvtt-party-resources-resource" data-id="{{r.id}}">
-              {{#if r.use_icon}}
-                <img src="{{ r.icon }}" alt="{{ r.name }}" title="{{ r.name }}">
-              {{/if}}
+    <section id="fvtt-party-resources-status-bar" class="collapsible">
+      <div id="status-bar-contents">
+        <ul class="clearfix">
+          {{#each resources as |r|}}
+            {{#if visible_for_players }}
+              <li class="flexrow fvtt-party-resources-resource" data-id="{{r.id}}">
+                {{#if r.use_icon}}
+                  <img src="{{ r.icon }}" alt="{{ r.name }}" title="{{ r.name }}">
+                {{/if}}
 
-              <span>
-                {{ r.name }} ({{ value }}{{#if max_value}}/{{ max_value }}{{/if}})
-              </span>
-            </li>
-          {{/if}}
-        {{/each}}
-      </ul>
-
+                <span>
+                  {{ r.name }} ({{ value }}{{#if max_value}}/{{ max_value }}{{/if}})
+                </span>
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
+      </div>
     </section>
+    <div id="status-bar-toggle" class="status-bar-toggle">
+      <i class="fas fa-caret-up"></i>
+    </div>
+  </div>
   {{/if}}
 {{/if}}
