@@ -19,6 +19,7 @@ export default class ResourcesStatusBar {
     const status_bar = await renderTemplate(template, data)
 
     $('#fvtt-party-resources-status-bar').remove()
+    $('#status-bar-toggle').remove()
 
     if(ModuleSettings.get('status_bar_location') == 'on_top') {
       $('header#ui-top').prepend(status_bar)
@@ -47,12 +48,23 @@ export default class ResourcesStatusBar {
 
     adjustStatusBarWidth();
 
+        const caretIcon = $('#status-bar-toggle i');
+        const statusBarLocation = ModuleSettings.get('status_bar_location');
+        if (statusBarLocation === 'on_top') {
+          caretIcon.removeClass('fa-caret-down').addClass('fa-caret-up');
+        } else {
+          caretIcon.removeClass('fa-caret-up').addClass('fa-caret-down');
+        }
+
     $('#status-bar-toggle').click(() => {
       event.stopPropagation();
       statusBarElement.toggleClass('collapsed');
 
-      const caretIcon = $('#status-bar-toggle i');
-      caretIcon.toggleClass('fa-caret-up fa-caret-down');
+      if (statusBarElement.hasClass('collapsed')) {
+        caretIcon.toggleClass('fa-caret-down fa-caret-up');
+      } else {
+        caretIcon.toggleClass('fa-caret-up fa-caret-down');
+      }
     });
 
     statusBarElement.click(() => {

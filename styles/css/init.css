@@ -110,6 +110,7 @@
   z-index: 9999; }
 
 #status-bar-container {
+  cursor: pointer;
   position: relative; 
   width: 100%;
   display: flex; 
@@ -118,10 +119,10 @@
 
 #fvtt-party-resources-status-bar {
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 6px 10px;
+  padding: 3px 10px;
   pointer-events: auto;
   /* width: calc(100% - 400px);  */
-  cursor: pointer;
+  /* cursor: pointer; */
   flex: 1;
   align-items: center;
   box-sizing: border-box;
@@ -141,11 +142,12 @@
     #fvtt-party-resources-status-bar ul li {
       color: white;
       display: table-cell;
-      /* float: left; */
+      float: left;
       font-size: 1rem;
       margin-right: 20px; }
       #fvtt-party-resources-status-bar ul li:hover {
-        background: rgba(100, 100, 100, 0.5); }
+        text-shadow: 0 0 10px var(--color-shadow-highlight)
+       }
       #fvtt-party-resources-status-bar ul li span {
         min-height: 32px;
         line-height: 32px;
@@ -251,27 +253,26 @@
   padding: 0;
 }
 
-.collapsed {
-  visibility: collapse;
-  justify-content: flex-end;
-}
-
 #status-bar-toggle {
-  cursor: pointer;
   position: absolute;
-  height: 34px;
-  right: 10px;
+  flex: 0 0 32px;
+  height: 38px;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10; 
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
-  padding: 5px; 
+  padding: 11px; 
   pointer-events: auto;
 }
 
+#status-bar-toggle:hover {
+  text-shadow: 0 0 10px var(--color-shadow-highlight);
+}
+
 .collapsed #status-bar-toggle i {
-  transform: rotate(180deg); /* Rotate caret icon when collapsed */
+  /* transform: rotate(180deg); */
+  transform: translateY(-50%);
 }
 
 /*# sourceMappingURL=../maps/init.css.map */
