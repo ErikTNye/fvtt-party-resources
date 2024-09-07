@@ -121,8 +121,6 @@
   background-color: rgba(0, 0, 0, 0.5);
   padding: 3px 10px;
   pointer-events: auto;
-  /* width: calc(100% - 400px);  */
-  /* cursor: pointer; */
   flex: 1;
   align-items: center;
   box-sizing: border-box;
@@ -271,7 +269,6 @@
 }
 
 .collapsed #status-bar-toggle i {
-  /* transform: rotate(180deg); */
   transform: translateY(-50%);
 }
 
