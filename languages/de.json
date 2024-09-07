@@ -56,5 +56,12 @@
   "FvttPartyResources.GMSettingsForm.StatusBarLocationHint": "Legt fest wo die Statusleiste auf dem Spielbildschirm angezeigt werden soll.",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationAtBottom": "Unten",
   "FvttPartyResources.GMSettingsForm.StatusBarLocationOnTop": "Oben",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint": "Wählen Sie die Ausrichtung der Statusleiste (links, zentriert oder rechts).",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentLeft": "Links",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentRight": "Rechts",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignmentCenter": "Zentiert",
+  "FvttPartyResources.GMSettingsForm.StatusBarAlignment": "Ausrichtung der Ressourcen in der Statusleiste.",
+  "FvttPartyResources.GMSettingsForm.DirectoryID": "Geben Sie an, dass nur Zeichen aus einem einzigen Verzeichnis gezählt werden sollen.",
+  "FvttPartyResources.GMSettingsForm.DirectoryIDHint": "Muss mit der UUID des Akteurverzeichnisses festgelegt werden. Wenn Sie das Feld leer lassen, werden alle Zeichen gezählt.",
   "FvttPartyResources.Title": "Gruppenressourcen"
 }
