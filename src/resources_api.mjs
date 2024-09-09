@@ -1,30 +1,56 @@
 import ResourcesList from "./resources_list.mjs";
 import ActorDnd5eResources from "./actor_dnd5e_resources.mjs";
 import ExtraTypes from '../../settings-extender/settings-extender.js'
+import ModuleSettings from './settings.mjs';
 
 export default class ResourcesApi {
+
   async notify_chat(name, value, new_value) {
-    if(!this.get(name.concat('_notify_chat')) || new_value == value) return;
-    const color = new_value >= value ? 'green' : 'red'
-    const resource = this.get(name.concat('_name'))
-    if(typeof resource == 'undefined') return;
+    const notificationType = ModuleSettings.get('notification_type');
+    if (notificationType === 'toast') {
+      this.notifyToast(name, value, new_value);
+    } else {
+      this.notifyChat(name, value, new_value);
+    }
+  }
 
-    let jump = new String(new_value-value)
-    if(jump > 0) jump = '+'.concat(jump)
+  async notifyChat(name, value, new_value) {
+    if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
+    const color = new_value >= value ? 'green' : 'red';
+    const resource = this.get(name.concat('_name'));
+    if (typeof resource == 'undefined') return;
 
-    let message = this.get(name.concat('_notify_chat_increment_message'))
-    if(new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'))
+    let jump = new String(new_value - value);
+    if (jump > 0) jump = '+'.concat(jump);
 
-    const template = 'modules/fvtt-party-resources/src/views/notification.html'
+    let message = this.get(name.concat('_notify_chat_increment_message'));
+    if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
+
+    const template = 'modules/fvtt-party-resources/src/views/notification.html';
     const notification_html = await renderTemplate(template, {
       message: message,
       resource: resource,
       color: color,
       new_value: new_value,
       jump: jump
-    })
+    });
 
-    return ChatMessage.create({content: notification_html})
+    return ChatMessage.create({ content: notification_html });
+  }
+
+  notifyToast(name, value, new_value) {
+    const resource = this.get(name.concat('_name'));
+    if (typeof resource == 'undefined') return;
+
+    let jump = new String(new_value - value);
+    if (jump > 0) jump = '+'.concat(jump);
+
+    let message = this.get(name.concat('_notify_chat_increment_message'));
+    if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
+
+    const notificationMessage = `${resource}: ${message} - ${new_value}(${jump}) `;
+    window.pr.notifications.queue(notificationMessage);
+    window.pr.notifications.render();
   }
 
   decrement(name, jump) {
@@ -84,7 +110,7 @@ export default class ResourcesApi {
     game.settings.register(
       'fvtt-party-resources',
       name,
-      mergeObject(properties, options || {})
+      foundry.utils.mergeObject(properties, options || {})
     )
   }
 

@@ -118,7 +118,11 @@
 }
 
 #fvtt-party-resources-status-bar {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--status-bar-color, rgba(0, 0, 0, 0.5)); /* Default to black */
+  opacity: var(--status-bar-opacity, 0.9); /* Default opacity */
+  height: var(--status-bar-height, 40px); /* Default height */
+  width: var(--status-bar-width, 100%); /* Default width */
+  transition: all 0.3s ease;
   padding: 3px 10px;
   pointer-events: auto;
   flex: 1;
@@ -126,7 +130,8 @@
   box-sizing: border-box;
   transition: height 0.3s ease;
   overflow: hidden;
-  margin-right: 40px; }
+  margin-right: 40px;
+  position: relative; }
   #fvtt-party-resources-status-bar ul {
     list-style: none;
     margin: 0;
@@ -156,6 +161,12 @@
         pointer-events: none;
         height: 32px;
         width: 32px; }
+        #fvtt-party-resources-status-bar.collapsed #status-bar-contents {
+          display: none; /* Hide the contents when collapsed */
+        }
+        #fvtt-party-resources-status-bar.collapsed #status-bar-toggle {
+          transform: translateY(50%) !important;
+        }
 
 #fvtt-party-resources-directions {
   animation: 250ms infinite alternate slidein;
@@ -239,25 +250,17 @@
 
 
 #status-bar-contents {
-  transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease, margin 0.3s ease;
+  overflow: hidden;
 }
 
-.collapsed #status-bar-contents {
-  max-height: 0;
-}
-
-.collapsed #fvtt-party-resources-status-bar {
-  max-height: 0;
-  padding: 0;
-}
-
-#status-bar-toggle {
+.status-bar-toggle {
   position: absolute;
   flex: 0 0 32px;
-  height: 38px;
+  height: 38px !important;
   right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
+  z-index: 1000;
+  /* transform: translateY(-50%); */
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 11px; 
@@ -268,8 +271,27 @@
   text-shadow: 0 0 10px var(--color-shadow-highlight);
 }
 
-.collapsed #status-bar-toggle i {
-  transform: translateY(-50%);
+#status-bar-toggle.collapsed {
+  transform: translateY(+50%);
+}
+
+.toast-notification {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  padding: 15px;
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  opacity: 0.3;
+  transition: opacity 0.5s;
+}
+
+.toast-notification.show {
+  opacity: 1;
 }
 
 /*# sourceMappingURL=../maps/init.css.map */

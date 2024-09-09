@@ -34,8 +34,12 @@ Hooks.on('updateActor', render_resources)
 Hooks.on('deleteActor', render_resources)
 
 Hooks.on('renderActorDirectory', async (app, html, data) => {
-  if(!game.user.isGM && !ModuleSettings.get('toggle_actors_button_for_players'))
-    return
+  if(!ModuleSettings.get('toggle_actors_button')) {
+    return;
+  }
+  if(!game.user.isGM && ModuleSettings.get('hide_actors_button_for_players')) {
+    return;
+  }
 
   let button = await renderTemplate(
     'modules/fvtt-party-resources/src/views/dashboard_button.html'
@@ -86,4 +90,6 @@ window.adjustStatusBarWidth = function() {
   statusBar.css('width', `calc(100% - ${sidebarWidth}px)`);
 }
 
-$(window).on('resize', adjustStatusBarWidth);
+if (ModuleSettings.get('status_bar_dynamic_width')) {
+  $(window).on('resize', adjustStatusBarWidth);
+}
