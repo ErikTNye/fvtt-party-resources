@@ -7,26 +7,27 @@ export default class ResourcesApi {
 
   async notify_chat(name, value, new_value) {
     const notificationType = ModuleSettings.get('notification_type');
-    if (notificationType === 'toast') {
-      this.notifyToast(name, value, new_value);
-    } else {
-      this.notifyChat(name, value, new_value);
+    const notification_html = await this.createNotificationHtml(name, value, new_value, notificationType === 'toast');
+    if (!notification_html) return;
+    if (game.user.isGM || this.get(`${name}_player_managed`)) {
+      game.socket.emit('module.fvtt-party-resources', { type: notificationType, content: notification_html });
     }
-  }
+}
 
-  async notifyChat(name, value, new_value) {
+  async createNotificationHtml(name, value, new_value, forToast = false) {
     if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
+
     const color = new_value >= value ? 'green' : 'red';
     const resource = this.get(name.concat('_name'));
     if (typeof resource == 'undefined') return;
 
-    let jump = new String(new_value - value);
-    if (jump > 0) jump = '+'.concat(jump);
+    let jump = (new_value - value).toString();
+    if (jump > 0) jump = `+${jump}`;
 
     let message = this.get(name.concat('_notify_chat_increment_message'));
     if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
 
-    const template = 'modules/fvtt-party-resources/src/views/notification.html';
+    const template = forToast ? 'modules/fvtt-party-resources/src/views/toast_notification.html' : 'modules/fvtt-party-resources/src/views/notification.html';
     const notification_html = await renderTemplate(template, {
       message: message,
       resource: resource,
@@ -35,8 +36,8 @@ export default class ResourcesApi {
       jump: jump
     });
 
-    return ChatMessage.create({ content: notification_html });
-  }
+    return notification_html;
+}
 
   notifyToast(name, value, new_value) {
     const resource = this.get(name.concat('_name'));
@@ -185,12 +186,21 @@ export default class ResourcesApi {
   }
 
   set(name, value, options) {
-    if(typeof options != 'undefined' && options['notify']) {
-      let old_value = this.get(name)
-      this.notify_chat(name, old_value, value)
-    }
-
-    game.settings.set('fvtt-party-resources', name, value)
+    let old_value = this.get(name);
+    const shouldNotify = options?.notify && old_value !== value;
+  
+    game.settings.set('fvtt-party-resources', name, value).then(() => {
+      if (shouldNotify) {
+        if (!this.notificationQueue) this.notificationQueue = [];
+        this.notificationQueue.push({ name, old_value, new_value: value });
+  
+        if (!this.notificationTimeout) {
+          this.notificationTimeout = setTimeout(() => {
+            this.processNotifications();
+          }, 200); // Delay to batch notifications
+        }
+      }
+    });
   }
 
   update_positions() {
@@ -199,6 +209,16 @@ export default class ResourcesApi {
     this.resources().resources.forEach((resource, index) => {
       this.set(`${resource.id}_position`, index+1)
     })
+  }
+
+  processNotifications() {
+    if (!this.notificationQueue?.length) return;
+    this.notificationQueue.forEach(({ name, old_value, new_value }) => {
+      this.notify_chat(name, old_value, new_value);
+    });
+    this.notificationQueue = [];
+    clearTimeout(this.notificationTimeout);
+    this.notificationTimeout = null;
   }
 
 }

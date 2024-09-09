@@ -68,6 +68,7 @@ export default class ModuleSettings {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarLocation'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarLocationHint'),
       default: 'on_top',
+      scope: 'client',
       type: String,
       isSelect: true,
       choices: {
@@ -82,6 +83,7 @@ export default class ModuleSettings {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignment'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint'),
       default: 'center',
+      scope: 'client',
       type: String,
       isSelect: true,
       choices: {
@@ -105,7 +107,10 @@ export default class ModuleSettings {
     this.add('notification_type', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationType'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationTypeHint'),
+      restricted: true,
+      scope: 'world',
       type: String,
+      config: true,
       isSelect: true,
       choices: {
         chat: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationTypeChat'),
@@ -122,7 +127,7 @@ export default class ModuleSettings {
       scope: 'client',
       config: true,
       type: String,
-      default: '#000000', // Default to black
+      default: '#000000',
       onChange: () => window.pr.status_bar.render(),
     });
 
@@ -137,7 +142,7 @@ export default class ModuleSettings {
         max: 1,
         step: 0.1,
       },
-      default: 0.8, // Default opacity
+      default: 0.8, 
       onChange: () => window.pr.status_bar.render(),
     });
 

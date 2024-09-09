@@ -123,14 +123,13 @@
   height: var(--status-bar-height, 40px); /* Default height */
   width: var(--status-bar-width, 100%); /* Default width */
   transition: all 0.3s ease;
-  padding: 3px 10px;
+  padding: 3px 30px;
   pointer-events: auto;
   flex: 1;
   align-items: center;
   box-sizing: border-box;
   transition: height 0.3s ease;
   overflow: hidden;
-  margin-right: 40px;
   position: relative; }
   #fvtt-party-resources-status-bar ul {
     list-style: none;
@@ -147,7 +146,7 @@
       display: table-cell;
       float: left;
       font-size: 1rem;
-      margin-right: 20px; }
+      margin-left: 30px; }
       #fvtt-party-resources-status-bar ul li:hover {
         text-shadow: 0 0 10px var(--color-shadow-highlight)
        }
@@ -293,5 +292,22 @@
 .toast-notification.show {
   opacity: 1;
 }
+
+.user-actions {
+  border: 1px solid grey;
+  border-top: none;
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.custom-toast {
+  background-color: #333 !important; /* Custom background color */
+  padding: 8px !important;
+  margin: 0 !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
 
 /*# sourceMappingURL=../maps/init.css.map */

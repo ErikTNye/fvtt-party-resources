@@ -43,6 +43,7 @@ export default class ResourceNotifications {
     this.notifications.forEach((notification) => {
       const message = notification.text();
       ui.notifications.info(message);
+      game.socket.emit('module.fvtt-party-resources', { type: 'toast', content: message });
     });
 
     // Clear notifications after displaying

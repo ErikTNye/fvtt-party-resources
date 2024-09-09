@@ -18,6 +18,14 @@ Hooks.once('init', () => {
   ModuleSettings.register()
 })
 
+Handlebars.registerHelper('or', function (a, b) {
+  return a || b;
+});
+
+Handlebars.registerHelper('and', function (a, b) {
+  return a && b;
+});
+
 Hooks.once('ready', () => {
   if(game.user.isGM && !window.pr.api.get('first-time-startup-notification-shown'))
     first_time_startup_notification()
@@ -53,6 +61,16 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
       $('#btn-dashboard').on('click', e => window.pr.dashboard.redraw(true))
     })
 })
+
+Hooks.once('ready', () => {
+  game.socket.on('module.fvtt-party-resources', (data) => {
+    if (data.type === 'toast') {
+      ui.notifications.info(data.content);
+    } else if (data.type === 'chat') {
+      ChatMessage.create({ content: data.content });
+    }
+  });
+});
 
 function first_time_startup_notification() {
   let message = game.i18n.format('FvttPartyResources.FirstTimeNotification', {
@@ -90,6 +108,4 @@ window.adjustStatusBarWidth = function() {
   statusBar.css('width', `calc(100% - ${sidebarWidth}px)`);
 }
 
-if (ModuleSettings.get('status_bar_dynamic_width')) {
-  $(window).on('resize', adjustStatusBarWidth);
-}
+$(window).on('resize', adjustStatusBarWidth);
