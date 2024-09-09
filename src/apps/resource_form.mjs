@@ -8,7 +8,10 @@ export default class ResourceForm extends FormApplication {
     // Handle the selected state of the type dropdown, and make sure the
     // corresponding name input is shown.
     if(this.id == 'edit-resource-form') {
-      document.getElementById('system_type').value = this.object.system_type
+      const systemTypeElement = document.getElementById('system_type');
+      if (systemTypeElement) {
+        systemTypeElement.value = this.object.system_type;
+      }
 
       if(this.object.system_type.includes('_item')) {
         $('#system_name').parents('div.form-group').removeClass('hidden')
@@ -82,7 +85,7 @@ export default class ResourceForm extends FormApplication {
    * @returns {Object}
    */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "fvtt-party-resources-form",
       classes: ["fvtt-party-resources"],
       template: "modules/fvtt-party-resources/src/views/resource_form.html",
@@ -95,10 +98,11 @@ export default class ResourceForm extends FormApplication {
   getData(object) {
     let defaults = {
       id_disabled: false,
+      is_gm: game.user.isGM,
       dnd5e: game.system.id == 'dnd5e',
       allowed_to_modify_settings: game.permissions.SETTINGS_MODIFY.includes(1)
     }
-    return mergeObject(defaults, this.object)
+    return foundry.utils.mergeObject(defaults, this.object)
   }
 
   /**
@@ -118,7 +122,10 @@ export default class ResourceForm extends FormApplication {
     ResourcesList.add(id)
 
     window.pr.api.register_resource(id)
-    window.pr.api.set(id, data['resource[default_value]'], { notify: false })
+    // Always update the default value
+    window.pr.api.set(id, data['resource[default_value]'], { notify: true })
+    // Only GM can update these fields
+    if (game.user.isGM) {
     window.pr.api.set(id.concat('_name'), data['resource[name]'])
     window.pr.api.set(id.concat('_notify_chat'), data['resource[notify_chat]'])
     window.pr.api.set(id.concat('_notify_chat_increment_message'), data['resource[notify_chat_increment_message]'])
@@ -129,7 +136,7 @@ export default class ResourceForm extends FormApplication {
     window.pr.api.set(id.concat('_use_icon'), data['resource[use_icon]'])
     window.pr.api.set(id.concat('_icon'), data['resource[icon]'])
     window.pr.api.set(id.concat('_system_name'), data['resource[system_name]'])
-
+    }
     if(this.id == 'add-resource-form') {
       window.pr.api.set(id.concat('_system_type'), data['resource[system_type]'])
     }

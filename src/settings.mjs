@@ -22,14 +22,25 @@ export default class ModuleSettings {
       { scope: "client", config: false, type: Boolean, default: false }
     )
 
-    this.add('toggle_actors_button_for_players', {
-      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowActorsButtonForPlayers'),
-      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowActorsButtonForPlayersHint'),
+    // Hide Party Resources button for everyone
+    this.add('toggle_actors_button', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowActorsButton'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowActorsButtonHint'),
       default: true,
       type: Boolean,
       onChange: value => ActorDirectory.collection.render('actors')
     });
 
+    // Hide Party Resources button from players
+    this.add('hide_actors_button_for_players', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.HideActorsButtonForPlayers'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.HideActorsButtonForPlayersHint'),
+      default: true,
+      type: Boolean,
+      onChange: value => ActorDirectory.collection.render('actors')
+    });
+
+    // Settings for Icon Orientation (Top/Below)
     this.add('icon_images_orientation', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.IconImagesOrientation'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.IconImagesOrientationHint'),
@@ -43,6 +54,7 @@ export default class ModuleSettings {
       onChange: value => window.pr.dashboard.redraw()
     });
 
+    // Settings for having the Status Bar
     this.add('toggle_status_bar', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowStatusBar'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.ShowStatusBarHint'),
@@ -51,10 +63,12 @@ export default class ModuleSettings {
       onChange: value => window.pr.status_bar.render()
     });
 
+    // Bar location (Top/Bottom)
     this.add('status_bar_location', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarLocation'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarLocationHint'),
       default: 'on_top',
+      scope: 'client',
       type: String,
       isSelect: true,
       choices: {
@@ -64,10 +78,12 @@ export default class ModuleSettings {
       onChange: value => window.pr.status_bar.render()
     });
 
+    // Bar Alignment (Left/Center/Right)
     this.add('status_bar_alignment', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignment'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarAlignmentHint'),
       default: 'center',
+      scope: 'client',
       type: String,
       isSelect: true,
       choices: {
@@ -78,6 +94,7 @@ export default class ModuleSettings {
       onChange: value => window.pr.status_bar.render()
     });
 
+    // Settings for Only counting a specific directory
     this.add('directory_id', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.DirectoryID'),
       hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.DirectoryIDHint'),
@@ -86,7 +103,80 @@ export default class ModuleSettings {
       onChange: value => window.location.reload()
     });
 
-    // TODO: status_bar_size
+    // Settings for notification Type (Chat Msg/Toast Notification)
+    this.add('notification_type', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationType'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationTypeHint'),
+      restricted: true,
+      scope: 'world',
+      type: String,
+      config: true,
+      isSelect: true,
+      choices: {
+        chat: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationTypeChat'),
+        toast: game.i18n.localize('FvttPartyResources.GMSettingsForm.NotificationTypeToast')
+      },
+      default: 'chat',
+      onChange: value => window.pr.notifications.render()
+    });
+
+    // Setting for status bar color (RGB) and opacity (A)
+     this.add('status_bar_color_rgb', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarColorRGB'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarColorRGBHint'),
+      scope: 'client',
+      config: true,
+      type: String,
+      default: '#000000',
+      onChange: () => window.pr.status_bar.render(),
+    });
+
+     this.add('status_bar_color_alpha', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarColorAlpha'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarColorAlphaHint'),
+      scope: 'client',
+      config: true,
+      type: Number,
+      range: {
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
+      default: 0.8, 
+      onChange: () => window.pr.status_bar.render(),
+    });
+
+    // Setting for status bar height
+    this.add('status_bar_height', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarHeight'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarHeightHint'),
+      scope: 'client',
+      config: true,
+      type: Number,
+      range: {
+        min: 25,
+        max: 100,
+        step: 5,
+      },
+      default: 40,
+      onChange: () => window.pr.status_bar.render()
+    });
+
+    // Setting for status bar width
+    this.add('status_bar_width', {
+      name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarWidth'),
+      hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarWidthHint'),
+      scope: 'client',
+      config: true,
+      type: Number,
+      range: {
+        min: 10,
+        max: 100,
+        step: 5,
+      },
+      default: 100,
+      onChange: () => window.pr.status_bar.render(),
+    });
 
   }
 }

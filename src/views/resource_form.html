@@ -1,158 +1,159 @@
 <form autocomplete="off"{{#if identifier}} data-identifier="{{ identifier }}"{{/if}}>
-
-  <section class="resource">
-    <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Label' }}</h2>
-    <div class="form-group">
-      <label for="name">{{ localize 'FvttPartyResources.ResourceForm.Name' }}</label>
-      <div class="form-fields">
-        <input type="text" id="name" name="resource[name]" value="{{ name }}" data-dtype="String" required="true">
+  {{#if is_gm}}
+    <section class="resource">
+      <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Label' }}</h2>
+      <div class="form-group">
+        <label for="name">{{ localize 'FvttPartyResources.ResourceForm.Name' }}</label>
+        <div class="form-fields">
+          <input type="text" id="name" name="resource[name]" value="{{ name }}" data-dtype="String" required="true">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NameHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NameHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label for="system_type">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResource' }}</label>
-      <div class="form-fields">
-        <select id="system_type" name="resource[system_type]">
-          <option value=""></option>
-          {{#if dnd5e }}
-          <option value="dnd_fifth_gold">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Gold' }}</option>
-          <option value="dnd_fifth_item">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Item' }}</option>
+  
+      <div class="form-group">
+        <label for="system_type">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResource' }}</label>
+        <div class="form-fields">
+          <select id="system_type" name="resource[system_type]">
+            <option value=""></option>
+            {{#if dnd5e }}
+            <option value="dnd_fifth_gold">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Gold' }}</option>
+            <option value="dnd_fifth_item">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Item' }}</option>
+            {{/if}}
+          </select>
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResourceHint' }}</p>
+      </div>
+  
+      <div class="form-group hidden">
+        <label for="system_name">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemName' }}</label>
+        <div class="form-fields">
+          <input type="text" id="system_name" name="resource[system_name]" value="{{ system_name }}" data-dtype="String">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemNameHint' }}</p>
+      </div>
+  
+      <div class="form-group">
+        <label for="identifier">{{ localize 'FvttPartyResources.ResourceForm.Identifier' }}</label>
+        <div class="form-fields">
+          <input type="text" id="identifier" name="resource[identifier]" value="{{ identifier }}" data-dtype="String" required="true"{{#if identifier}} disabled{{/if}}>
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.IdentifierHint' }}</p>
+      </div>
+  
+      <div class="form-group">
+        <label class="checkbox" for="use_icon">
+          <input type="checkbox" id="use_icon" name="resource[use_icon]" value="true"{{#if use_icon}} checked{{/if}} data-dtype="Boolean">
+          {{ localize 'FvttPartyResources.ResourceForm.UseIcon' }}
+        </label>
+      </div>
+  
+      <div class="form-group">
+        <label for="icon">{{ localize 'FvttPartyResources.ResourceForm.IconImage' }}</label>
+        <div class="form-fields">
+          <input type="text" class="filePickerTarget" name="resource[icon]" value="{{ icon }}" data-target="icon" data-type="server" data-dtype="String" />
+          {{#if can_browse }}
+          <button title="Use an image from Foundry Server" class="menu-button file-picker" data-type="imagevideo" data-target="resource[icon]">
+            <i class="fas fa-server"></i>
+          </button>
           {{/if}}
-        </select>
+        </div>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResourceHint' }}</p>
-    </div>
-
-    <div class="form-group hidden">
-      <label for="system_name">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemName' }}</label>
-      <div class="form-fields">
-        <input type="text" id="system_name" name="resource[system_name]" value="{{ system_name }}" data-dtype="String">
+    {{/if}}
+      <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Values' }}</h2>
+      <div class="form-group">
+        <label for="default_value">{{ localize 'FvttPartyResources.ResourceForm.DefaultValue' }}</label>
+        <div class="form-fields">
+          <input type="number" id="default_value" name="resource[default_value]" value="{{ default_value }}" data-dtype="Number">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.DefaultValueHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemNameHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label for="identifier">{{ localize 'FvttPartyResources.ResourceForm.Identifier' }}</label>
-      <div class="form-fields">
-        <input type="text" id="identifier" name="resource[identifier]" value="{{ identifier }}" data-dtype="String" required="true"{{#if identifier}} disabled{{/if}}>
+    {{#if is_gm}}
+      <div class="form-group">
+        <label for="min_value">{{ localize 'FvttPartyResources.ResourceForm.MinValue' }}</label>
+        <div class="form-fields">
+          <input type="number" id="min_value" name="resource[min_value]" value="{{ min_value }}" data-dtype="Number">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.MinValueHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.IdentifierHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label class="checkbox" for="use_icon">
-        <input type="checkbox" id="use_icon" name="resource[use_icon]" value="true"{{#if use_icon}} checked{{/if}} data-dtype="Boolean">
-        {{ localize 'FvttPartyResources.ResourceForm.UseIcon' }}
-      </label>
-    </div>
-
-    <div class="form-group">
-      <label for="icon">{{ localize 'FvttPartyResources.ResourceForm.IconImage' }}</label>
-      <div class="form-fields">
-        <input type="text" class="filePickerTarget" name="resource[icon]" value="{{ icon }}" data-target="icon" data-type="server" data-dtype="String" />
-        {{#if can_browse }}
-        <button title="Use an image from Foundry Server" class="menu-button file-picker" data-type="imagevideo" data-target="resource[icon]">
-          <i class="fas fa-server"></i>
-        </button>
-        {{/if}}
+  
+      <div class="form-group">
+        <label for="max_value">{{ localize 'FvttPartyResources.ResourceForm.MaxValue' }}</label>
+        <div class="form-fields">
+          <input type="number" id="max_value" name="resource[max_value]" value="{{ max_value }}" data-dtype="Number">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.MaxValueHint' }}</p>
       </div>
-    </div>
-
-    <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Values' }}</h2>
-    <div class="form-group">
-      <label for="default_value">{{ localize 'FvttPartyResources.ResourceForm.DefaultValue' }}</label>
-      <div class="form-fields">
-        <input type="number" id="default_value" name="resource[default_value]" value="{{ default_value }}" data-dtype="Number">
+    {{/if}}
+    {{#if is_gm}}
+      <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Notifications' }}</h2>
+  
+      <div class="form-group">
+        <label class="checkbox" for="notify_chat">
+          <input type="checkbox" id="notify_chat" name="resource[notify_chat]" value="true"{{#if notify_chat}} checked{{/if}} data-dtype="Boolean">
+          {{ localize 'FvttPartyResources.ResourceForm.NotifyChat' }}
+        </label>
+  
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.DefaultValueHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label for="min_value">{{ localize 'FvttPartyResources.ResourceForm.MinValue' }}</label>
-      <div class="form-fields">
-        <input type="number" id="min_value" name="resource[min_value]" value="{{ min_value }}" data-dtype="Number">
+  
+      <div class="form-group">
+        <label class="checkbox" for="notify_chat_increment_message">
+          {{ localize 'FvttPartyResources.ResourceForm.NotifyChatIncrementMessage' }}
+        </label>
+        <div class="form-fields">
+          <input type="text" id="notify_chat_increment_message" name="resource[notify_chat_increment_message]" value="{{ notify_chat_increment_message }}" data-dtype="String"{{#unless notify_chat}} disabled{{/unless}}>
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatIncrementMessageHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.MinValueHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label for="max_value">{{ localize 'FvttPartyResources.ResourceForm.MaxValue' }}</label>
-      <div class="form-fields">
-        <input type="number" id="max_value" name="resource[max_value]" value="{{ max_value }}" data-dtype="Number">
+  
+      <div class="form-group">
+        <label class="checkbox" for="notify_chat_decrement_message">
+          {{ localize 'FvttPartyResources.ResourceForm.NotifyChatDecrementMessage' }}
+        </label>
+        <div class="form-fields">
+          <input type="text" id="notify_chat_decrement_message" name="resource[notify_chat_decrement_message]" value="{{ notify_chat_decrement_message }}" data-dtype="String"{{#unless notify_chat}} disabled{{/unless}}>
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatDecrementMessageHint' }}</p>
       </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.MaxValueHint' }}</p>
-    </div>
-
-    <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Notifications' }}</h2>
-
-    <div class="form-group">
-      <label class="checkbox" for="notify_chat">
-        <input type="checkbox" id="notify_chat" name="resource[notify_chat]" value="true"{{#if notify_chat}} checked{{/if}} data-dtype="Boolean">
-        {{ localize 'FvttPartyResources.ResourceForm.NotifyChat' }}
-      </label>
-
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label class="checkbox" for="notify_chat_increment_message">
-        {{ localize 'FvttPartyResources.ResourceForm.NotifyChatIncrementMessage' }}
-      </label>
-      <div class="form-fields">
-        <input type="text" id="notify_chat_increment_message" name="resource[notify_chat_increment_message]" value="{{ notify_chat_increment_message }}" data-dtype="String"{{#unless notify_chat}} disabled{{/unless}}>
-      </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatIncrementMessageHint' }}</p>
-    </div>
-
-    <div class="form-group">
-      <label class="checkbox" for="notify_chat_decrement_message">
-        {{ localize 'FvttPartyResources.ResourceForm.NotifyChatDecrementMessage' }}
-      </label>
-      <div class="form-fields">
-        <input type="text" id="notify_chat_decrement_message" name="resource[notify_chat_decrement_message]" value="{{ notify_chat_decrement_message }}" data-dtype="String"{{#unless notify_chat}} disabled{{/unless}}>
-      </div>
-      <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.NotifyChatDecrementMessageHint' }}</p>
-    </div>
-
-    <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Settings' }}</h2>
-
-    <div class="form-group">
-      <label class="checkbox" for="player_managed">
-        <input type="checkbox" id="player_managed" name="resource[player_managed]" value="true"{{#if player_managed}} checked{{/if}}{{#unless allowed_to_modify_settings}} title="{{ localize 'FvttPartyResources.ResourceForm.PlayerManagedRestriction' }}" disabled{{/unless}} data-dtype="Boolean">
-        {{ localize 'FvttPartyResources.ResourceForm.PlayerManaged' }}
-      </label>
-
-      <p class="notes">
-        {{ localize 'FvttPartyResources.ResourceForm.PlayerManagedHint' }}
+  
+      <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Settings' }}</h2>
+  
+      <div class="form-group">
+        <label class="checkbox" for="player_managed">
+          <input type="checkbox" id="player_managed" name="resource[player_managed]" value="true"{{#if player_managed}} checked{{/if}}{{#unless allowed_to_modify_settings}} title="{{ localize 'FvttPartyResources.ResourceForm.PlayerManagedRestriction' }}" disabled{{/unless}} data-dtype="Boolean">
+          {{ localize 'FvttPartyResources.ResourceForm.PlayerManaged' }}
+        </label>
+  
+        <p class="notes">
+          {{ localize 'FvttPartyResources.ResourceForm.PlayerManagedHint' }}
+          {{#unless allowed_to_modify_settings}}
+          <strong>
+            {{ localize 'FvttPartyResources.ResourceForm.PlayerManagedRestriction' }}
+          </strong>
+          {{/unless}}
+        </p>
         {{#unless allowed_to_modify_settings}}
-        <strong>
-          {{ localize 'FvttPartyResources.ResourceForm.PlayerManagedRestriction' }}
-        </strong>
+        <button id="configure-permissions">{{ localize 'FvttPartyResources.ResourceForm.AllowPlayersToModifySettings' }}</button>
         {{/unless}}
-      </p>
-      {{#unless allowed_to_modify_settings}}
-      <button id="configure-permissions">{{ localize 'FvttPartyResources.ResourceForm.AllowPlayersToModifySettings' }}</button>
+      </div>
+    </section>
+  
+    <hr>
+  {{/if}}
+    <footer class="sheet-footer flexrow">
+      {{#unless identifier}}
+      <button type="reset" name="reset">
+        <i class="fas fa-undo"></i> {{localize 'FvttPartyResources.ResourceForm.Reset'}}
+      </button>
       {{/unless}}
-    </div>
-  </section>
-
-  <hr>
-
-  <footer class="sheet-footer flexrow">
-    {{#unless identifier}}
-    <button type="reset" name="reset">
-      <i class="fas fa-undo"></i> {{localize 'FvttPartyResources.ResourceForm.Reset'}}
-    </button>
-    {{/unless}}
-    <button type="submit" name="submit">
-      <i class="far fa-save"></i>
-      {{#if identifier}}
-      {{localize 'FvttPartyResources.ResourceForm.SaveChanges'}}
-      {{else}}
-      {{localize 'FvttPartyResources.ResourceForm.CreateResource'}}
-      {{/if}}
-    </button>
-  </footer>
-
-</form>
+      <button type="submit" name="submit">
+        <i class="far fa-save"></i>
+        {{#if identifier}}
+        {{localize 'FvttPartyResources.ResourceForm.SaveChanges'}}
+        {{else}}
+        {{localize 'FvttPartyResources.ResourceForm.CreateResource'}}
+        {{/if}}
+      </button>
+    </footer>
+  
+  </form>

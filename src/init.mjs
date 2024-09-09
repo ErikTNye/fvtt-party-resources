@@ -18,6 +18,14 @@ Hooks.once('init', () => {
   ModuleSettings.register()
 })
 
+Handlebars.registerHelper('or', function (a, b) {
+  return a || b;
+});
+
+Handlebars.registerHelper('and', function (a, b) {
+  return a && b;
+});
+
 Hooks.once('ready', () => {
   if(game.user.isGM && !window.pr.api.get('first-time-startup-notification-shown'))
     first_time_startup_notification()
@@ -34,8 +42,12 @@ Hooks.on('updateActor', render_resources)
 Hooks.on('deleteActor', render_resources)
 
 Hooks.on('renderActorDirectory', async (app, html, data) => {
-  if(!game.user.isGM && !ModuleSettings.get('toggle_actors_button_for_players'))
-    return
+  if(!ModuleSettings.get('toggle_actors_button')) {
+    return;
+  }
+  if(!game.user.isGM && ModuleSettings.get('hide_actors_button_for_players')) {
+    return;
+  }
 
   let button = await renderTemplate(
     'modules/fvtt-party-resources/src/views/dashboard_button.html'
@@ -49,6 +61,16 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
       $('#btn-dashboard').on('click', e => window.pr.dashboard.redraw(true))
     })
 })
+
+Hooks.once('ready', () => {
+  game.socket.on('module.fvtt-party-resources', (data) => {
+    if (data.type === 'toast') {
+      ui.notifications.info(data.content);
+    } else if (data.type === 'chat') {
+      ChatMessage.create({ content: data.content });
+    }
+  });
+});
 
 function first_time_startup_notification() {
   let message = game.i18n.format('FvttPartyResources.FirstTimeNotification', {
@@ -79,11 +101,3 @@ function render_resources() {
   window.pr.dashboard.redraw()
   window.pr.status_bar.render()
 }
-
-window.adjustStatusBarWidth = function() {
-  const sidebarWidth = $('#sidebar').outerWidth();
-  const statusBar = $('#fvtt-party-resources-status-bar');
-  statusBar.css('width', `calc(100% - ${sidebarWidth}px)`);
-}
-
-$(window).on('resize', adjustStatusBarWidth);
