@@ -101,11 +101,3 @@ function render_resources() {
   window.pr.dashboard.redraw()
   window.pr.status_bar.render()
 }
-
-window.adjustStatusBarWidth = function() {
-  const sidebarWidth = $('#sidebar').outerWidth();
-  const statusBar = $('#fvtt-party-resources-status-bar');
-  statusBar.css('width', `calc(100% - ${sidebarWidth}px)`);
-}
-
-$(window).on('resize', adjustStatusBarWidth);

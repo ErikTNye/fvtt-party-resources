@@ -162,17 +162,6 @@ export default class ModuleSettings {
       onChange: () => window.pr.status_bar.render()
     });
 
-    // Setting for dynamic width toggle
-    this.add('status_bar_dynamic_width', {
-    name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarDynamicWidth'),
-    hint: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarDynamicWidthHint'),
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: () => window.pr.status_bar.render(),
-  });
-
     // Setting for status bar width
     this.add('status_bar_width', {
       name: game.i18n.localize('FvttPartyResources.GMSettingsForm.StatusBarWidth'),

@@ -59,8 +59,6 @@
   "FvttPartyResources.GMSettingsForm.NotificationTypeToast": "Toast notification",
   "FvttPartyResources.GMSettingsForm.StatusBarHeight": "Status Bar Height",
   "FvttPartyResources.GMSettingsForm.StatusBarHeightHint": "Set the height of the status bar by the percentage of the header.",
-  "FvttPartyResources.GMSettingsForm.StatusBarDynamicWidth": "Dynamic Status Bar Width",
-  "FvttPartyResources.GMSettingsForm.StatusBarDynamicWidthHint": "Enable dynamic width based on screen size or use a fixed width.",
   "FvttPartyResources.GMSettingsForm.StatusBarWidth": "Status Bar Width",
   "FvttPartyResources.GMSettingsForm.StatusBarWidthHint": "Set the width of the status bar by what percentage of the header should be taken by the resource bar.",
   "FvttPartyResources.GMSettingsForm.ShowStatusBar": "Show the status bar.",

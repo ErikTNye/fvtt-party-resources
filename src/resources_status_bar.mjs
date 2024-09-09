@@ -35,8 +35,7 @@ export default class ResourcesStatusBar {
     const caretIcon = $('#status-bar-toggle i');
     const statusBarLocation = ModuleSettings.get('status_bar_location');
     const newHeight = ModuleSettings.get('status_bar_height');
-    const useDynamicWidth = ModuleSettings.get('status_bar_dynamic_width');
-    const widthValue = useDynamicWidth ? adjustStatusBarWidth() : `${ModuleSettings.get('status_bar_width')}%`;
+    const widthValue = `${ModuleSettings.get('status_bar_width')}%`;
 
 
     // Set alignment classes
