@@ -35,7 +35,9 @@ export default class ResourceNotifications {
 
   renderChat() {
     this.notifications.forEach((notification, index) => {
-      this.container().append(notification);
+      if (game.user.isGM || game.users.active.find(u => u.isGM)) {
+        emitNotification(notificationType, notification_html);
+      }
     });
   }
 
@@ -43,7 +45,9 @@ export default class ResourceNotifications {
     this.notifications.forEach((notification) => {
       const message = notification.text();
       ui.notifications.info(message);
-      game.socket.emit('module.fvtt-party-resources', { type: 'toast', content: message });
+      if (game.user.isGM || game.users.active.find(u => u.isGM)) {
+        emitNotification(notificationType, notification_html);
+      }
     });
 
     // Clear notifications after displaying
@@ -62,4 +66,13 @@ export default class ResourceNotifications {
     if(element.length == 0) return
     element.fadeOut(200, element.empty)
   }
+}
+
+
+let notificationTimeout;
+function emitNotification(type, content) {
+  clearTimeout(notificationTimeout); // Clear any previous timeout
+  notificationTimeout = setTimeout(() => {
+    game.socket.emit('module.fvtt-party-resources', { type, content });
+  }, 100); // Debounce delay to prevent rapid consecutive emissions
 }
