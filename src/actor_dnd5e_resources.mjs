@@ -51,11 +51,16 @@ export default class ActorDnd5eResources {
     const items = this.player_items(names)
 
     if(items.length == 0) return 0
-    if(items.length == 1) return (items[0].system?.quantity || 1)
+    return items.reduce((total, item) => total + (item?.system?.quantity || 1), 0);
+  }
 
-    return items
-      .map(i => { return i?.system?.quantity || 0 })
-      .reduce((a,b) => { return a + b })
+  static average_player_items(names) {
+    names = names.split(';').map((a) => a.trim());
+    const items = this.player_items(names);
+
+    if (items.length == 0) return 0;
+    const totalQuantity = items.map(i => i?.system?.quantity || 0).reduce((a, b) => a + b, 0);
+    return totalQuantity / items.length;
   }
 
   static player_characters() {

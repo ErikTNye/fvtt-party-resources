@@ -1,5 +1,3 @@
-import ModuleSettings from './settings.mjs';
-
 export default class ResourceNotifications {
   constructor() {
     this.notifications = [];
@@ -25,29 +23,9 @@ export default class ResourceNotifications {
   }
 
   render() {
-    const notificationType = ModuleSettings.get('notification_type')
-    if (notificationType === 'toast') {
-      this.renderToast();
-    } else {
-      this.renderChat();
-    }
-  }
-
-  renderChat() {
     this.notifications.forEach((notification, index) => {
       this.container().append(notification);
     });
-  }
-
-  renderToast() {
-    this.notifications.forEach((notification) => {
-      const message = notification.text();
-      ui.notifications.info(message);
-      game.socket.emit('module.fvtt-party-resources', { type: 'toast', content: message });
-    });
-
-    // Clear notifications after displaying
-    this.notifications = [];
   }
 
   clear(element) {
