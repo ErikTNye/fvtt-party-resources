@@ -9,9 +9,40 @@ export default class ResourcesApi {
     const notificationType = ModuleSettings.get('notification_type');
     const notification_html = await this.createNotificationHtml(name, value, new_value, notificationType === 'toast');
     if (!notification_html) return;
-    if (game.user.isGM || this.get(`${name}_player_managed`)) {
-      game.socket.emit('module.fvtt-party-resources', { type: notificationType, content: notification_html });
+
+    const isRegularResource = !this.is_system_specific_resource(name);
+    if (game.user.isGM || isRegularResource) {
+        if (notificationType === 'toast') {
+            ui.notifications.info(notification_html);
+            game.socket.emit('module.fvtt-party-resources', { type: notificationType, content: notification_html });
+        } else {
+          this.notifyChat(name, value, new_value);
+        }
     }
+}
+
+async notifyChat(name, value, new_value) {
+  if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
+  const color = new_value >= value ? 'green' : 'red';
+  const resource = this.get(name.concat('_name'));
+  if (typeof resource == 'undefined') return;
+
+  let jump = new String(new_value - value);
+  if (jump > 0) jump = '+'.concat(jump);
+
+  let message = this.get(name.concat('_notify_chat_increment_message'));
+  if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
+
+  const template = 'modules/fvtt-party-resources/src/views/notification.html';
+  const notification_html = await renderTemplate(template, {
+    message: message,
+    resource: resource,
+    color: color,
+    new_value: new_value,
+    jump: jump
+  });
+
+  return ChatMessage.create({ content: notification_html });
 }
 
   async createNotificationHtml(name, value, new_value, forToast = false) {
@@ -192,12 +223,20 @@ export default class ResourcesApi {
     game.settings.set('fvtt-party-resources', name, value).then(() => {
       if (shouldNotify) {
         if (!this.notificationQueue) this.notificationQueue = [];
-        this.notificationQueue.push({ name, old_value, new_value: value });
+        const notificationKey = `${name}_${old_value}_${value}`;
+
+        const isDuplicate = this.notificationQueue.some(
+          (n) => `${n.name}_${n.old_value}_${n.new_value}` === notificationKey
+        );
   
-        if (!this.notificationTimeout) {
-          this.notificationTimeout = setTimeout(() => {
-            this.processNotifications();
-          }, 200); // Delay to batch notifications
+        if (!isDuplicate) {
+          this.notificationQueue.push({ name, old_value, new_value: value });
+  
+          if (!this.notificationTimeout) {
+            this.notificationTimeout = setTimeout(() => {
+              this.processNotifications();
+            }, 200); // Delay to batch notifications
+          }
         }
       }
     });
