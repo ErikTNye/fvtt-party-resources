@@ -19,31 +19,31 @@ export default class ResourcesApi {
           this.notifyChat(name, value, new_value);
         }
     }
-}
+  }
 
-async notifyChat(name, value, new_value) {
-  if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
-  const color = new_value >= value ? 'green' : 'red';
-  const resource = this.get(name.concat('_name'));
-  if (typeof resource == 'undefined') return;
+  async notifyChat(name, value, new_value) {
+    if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
+    const color = new_value >= value ? 'green' : 'red';
+    const resource = this.get(name.concat('_name'));
+    if (typeof resource == 'undefined') return;
 
-  let jump = new String(new_value - value);
-  if (jump > 0) jump = '+'.concat(jump);
+    let jump = new String(new_value - value);
+    if (jump > 0) jump = '+'.concat(jump);
 
-  let message = this.get(name.concat('_notify_chat_increment_message'));
-  if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
+    let message = this.get(name.concat('_notify_chat_increment_message'));
+    if (new_value < value) message = this.get(name.concat('_notify_chat_decrement_message'));
 
-  const template = 'modules/fvtt-party-resources/src/views/notification.html';
-  const notification_html = await renderTemplate(template, {
-    message: message,
-    resource: resource,
-    color: color,
-    new_value: new_value,
-    jump: jump
-  });
+    const template = 'modules/fvtt-party-resources/src/views/notification.html';
+    const notification_html = await renderTemplate(template, {
+      message: message,
+      resource: resource,
+      color: color,
+      new_value: new_value,
+      jump: jump
+    });
 
-  return ChatMessage.create({ content: notification_html });
-}
+    return ChatMessage.create({ content: notification_html });
+  }
 
   async createNotificationHtml(name, value, new_value, forToast = false) {
     if (!this.get(name.concat('_notify_chat')) || new_value == value) return;
@@ -68,7 +68,7 @@ async notifyChat(name, value, new_value) {
     });
 
     return notification_html;
-}
+  }
 
   notifyToast(name, value, new_value) {
     const resource = this.get(name.concat('_name'));
@@ -126,7 +126,7 @@ async notifyChat(name, value, new_value) {
   }
 
   is_system_specific_resource(id) {
-    return this.get(id.concat('_system_type')) != ""
+    return this.get(id.concat('_system_type')) != "custom_resource"
   }
 
   register_setting(name, options) {
@@ -163,6 +163,14 @@ async notifyChat(name, value, new_value) {
     // for system-specific resources.
     this.register_setting(resource.concat('_system_type'), { type: String, default: '' })
     this.register_setting(resource.concat('_system_name'), { type: String, default: '' })
+    this.register_setting(resource.concat('_avg'), { type: Number, default: 0 });
+    this.register_setting(resource.concat('_min_element'), { type: Number, default: 0 });
+    this.register_setting(resource.concat('_max_element'), { type: Number, default: 0 });
+    this.register_setting(resource.concat('_median'), { type: Number, default: 0 });
+    this.register_setting(resource.concat('_view_type'), { type: String, default: 'count' });
+    this.register_setting(resource.concat('_view_detail'), { type: String, default: 'normal' });
+    this.register_setting(resource.concat('_hide_from_bar'), { type: Boolean, default: false });
+    this.register_setting(resource.concat('_step'), { type: Number, default: 1 });
   }
 
   resources() {
@@ -179,22 +187,38 @@ async notifyChat(name, value, new_value) {
       this.register_resource(resource)
 
       if(this.is_system_specific_resource(resource)) {
+        const resourceName = resource.concat('_system_name');
+        const systemType = resource.concat('_system_type')
         const old_value = this.get(resource)
         const new_value = ActorDnd5eResources.count(
-          this.get(resource.concat('_system_type')),
-          this.get(resource.concat('_system_name'))
+          this.get(systemType),
+          this.get(resourceName)
         )
 
+        const avg = ActorDnd5eResources.average_player_items(this.get(systemType), this.get(resourceName));
+        const minElement = ActorDnd5eResources.min_player_items(this.get(systemType), this.get(resourceName));
+        const maxElement = ActorDnd5eResources.max_player_items(this.get(systemType), this.get(resourceName));
+        const median = ActorDnd5eResources.median_player_items(this.get(systemType), this.get(resourceName));
+
+        this.set(resource.concat('_avg'), avg, { notify: false });
+        this.set(resource.concat('_min_element'), minElement, { notify: false });
+        this.set(resource.concat('_max_element'), maxElement, { notify: false });
+        this.set(resource.concat('_median'), median, { notify: false });
         this.set(resource, new_value, { notify: old_value != new_value })
       }
 
-      results.push({
+      const resourceData = {
         id: resource,
         value: this.get(resource),
         position: this.get(resource.concat('_position')),
         name: this.get(resource.concat('_name')),
         max_value: this.get(resource.concat('_max')),
         min_value: this.get(resource.concat('_min')),
+        step: this.get(resource.concat('_step')),
+        avg_value: this.get(resource.concat('_avg')),
+        min_element: this.get(resource.concat('_min_element')),
+        max_element: this.get(resource.concat('_max_element')),
+        median_value: this.get(resource.concat('_median')),
         icon: this.get(resource.concat('_icon')),
         icon_on_top: this.get('icon_images_orientation') == 'on_top',
         use_icon: this.get(resource.concat('_use_icon')),
@@ -207,12 +231,21 @@ async notifyChat(name, value, new_value) {
         visible_for_players: game.user.isGM || this.get(resource.concat('_visible')),
         is_regular_resource: !this.is_system_specific_resource(resource),
         is_gm: game.user.isGM,
+        hide_from_bar: this.get(resource.concat('_hide_from_bar')),
+        view_type: this.get(resource.concat('_view_type')),
+        view_detail: this.get(resource.concat('_view_detail')),
         allowed_to_modify_settings: game.permissions.SETTINGS_MODIFY.includes(1),
         system_type: this.get(resource.concat('_system_type')),
         system_name: this.get(resource.concat('_system_name'))
-      })
+      }
+
+      results.push(resourceData);
+
+      console.log(`Resource Data for ${resource}:`, resourceData);
     })
 
+    console.log('Complete Resources:', results);
+    
     return { resources: results }
   }
 

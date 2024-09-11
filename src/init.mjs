@@ -4,6 +4,7 @@ import DashboardDirections from "./dashboard_directions.mjs";
 import ResourceNotifications from "./resource_notifications.mjs"
 import ResourcesDashboard from "./apps/resources_dashboard.mjs"
 import ResourcesStatusBar from "./resources_status_bar.mjs";
+import PartyResources from "./macro-api/resources_api_wrapper.mjs";
 
 Hooks.once('init', () => {
   window.pr = {
@@ -16,6 +17,7 @@ Hooks.once('init', () => {
 
   loadTemplates(templates())
   ModuleSettings.register()
+  window.PartyResources = PartyResources
 })
 
 Handlebars.registerHelper('or', function (a, b) {
@@ -24,6 +26,10 @@ Handlebars.registerHelper('or', function (a, b) {
 
 Handlebars.registerHelper('and', function (a, b) {
   return a && b;
+});
+
+Handlebars.registerHelper('eq', function(a, b) {
+  return a === b;
 });
 
 Hooks.once('ready', () => {

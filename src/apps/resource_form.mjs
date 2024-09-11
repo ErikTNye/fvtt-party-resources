@@ -12,7 +12,6 @@ export default class ResourceForm extends FormApplication {
       if (systemTypeElement) {
         systemTypeElement.value = this.object.system_type;
       }
-
       if(this.object.system_type.includes('_item')) {
         $('#system_name').parents('div.form-group').removeClass('hidden')
       } else {
@@ -52,6 +51,16 @@ export default class ResourceForm extends FormApplication {
       $('#identifier').val(this.sanitize_identifier(value))
     })
 
+    html.on('click', '.delete', e => {
+      e.stopPropagation()
+      e.preventDefault();
+      const setting = this.object.identifier;
+      if (setting) {
+        ResourcesList.remove(setting);
+        this.close();
+      }
+    })
+
     // Selecting a 5e specific resource will prefil the identifier input
     // with a specific value.
     html.on('change', '#system_type', event => {
@@ -77,6 +86,23 @@ export default class ResourceForm extends FormApplication {
         $('[name="resource[icon]"]').val(ActorDnd5eResources.icons[selection])
       }
     })
+
+    html.find('#view_type').on('change', (event) => {
+      const viewType = event.target.value;
+  
+      if (viewType === 'statistics') {
+        html.find('input[name="resource[view_detail]"]').closest('.form-group').show();
+      } else {
+        html.find('input[name="resource[view_detail]"]').closest('.form-group').hide();
+      }
+    });
+  
+    const initialViewType = html.find('#view_type').val();
+    if (initialViewType === 'statistics') {
+      html.find('input[name="resource[view_detail]"]').closest('.form-group').show();
+    } else {
+      html.find('input[name="resource[view_detail]"]').closest('.form-group').hide();
+    }
   }
 
   /**
@@ -102,7 +128,16 @@ export default class ResourceForm extends FormApplication {
       dnd5e: game.system.id == 'dnd5e',
       allowed_to_modify_settings: game.permissions.SETTINGS_MODIFY.includes(1)
     }
-    return foundry.utils.mergeObject(defaults, this.object)
+
+      const resourceData = window.pr.api.resources();
+      const currentResource = resourceData.resources.find(r => r.id === this.object.identifier);
+      if (currentResource) {
+        defaults = foundry.utils.mergeObject(defaults, currentResource);
+      } else {
+        console.warn(`Resource with identifier ${this.object.identifier} not found.`);
+      }
+
+      return foundry.utils.mergeObject(defaults, this.object);
   }
 
   /**
@@ -135,6 +170,10 @@ export default class ResourceForm extends FormApplication {
     window.pr.api.set(id.concat('_player_managed'), data['resource[player_managed]'])
     window.pr.api.set(id.concat('_use_icon'), data['resource[use_icon]'])
     window.pr.api.set(id.concat('_icon'), data['resource[icon]'])
+    window.pr.api.set(id.concat('_view_type'), data['resource[view_type]'])
+    window.pr.api.set(id.concat('_view_detail'), data['resource[view_detail]'])
+    window.pr.api.set(id.concat('_step'), data['resource[step]'])
+    window.pr.api.set(id.concat('_hide_from_bar'), data['resource[hide_from_bar]'])
     window.pr.api.set(id.concat('_system_name'), data['resource[system_name]'])
     }
     if(this.id == 'add-resource-form') {

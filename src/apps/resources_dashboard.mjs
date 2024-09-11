@@ -3,7 +3,6 @@ import ResourcesList from "./../resources_list.mjs";
 import DashboardDirections from "./../dashboard_directions.mjs";
 import DraggableResources from "./../draggable_resources.mjs";
 import CursorTooltip from "./../cursor_tooltip.mjs";
-import ActorDnd5eResources from "./../actor_dnd5e_resources.mjs";
 
 export default class ResourcesDashboard extends Application {
   static get defaultOptions() {

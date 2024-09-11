@@ -94,6 +94,23 @@
               border-right: 1px solid grey;
               left: 0; }
 
+/* Align the radio buttons and labels neatly */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust the gap as needed */
+}
+
+/* Adjust the spacing around radio options */
+.radio-option {
+  display: flex;
+  align-items: center;
+}
+
+.radio-option label {
+  margin-left: 5px; /* Add space between radio button and label */
+}
+
 #add-resource-form label.checkbox, #edit-resource-form label.checkbox {
   /* Not sure why this was on 11px tbh. */
   font-size: 14px !important;

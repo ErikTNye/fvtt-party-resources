@@ -15,6 +15,7 @@
         <div class="form-fields">
           <select id="system_type" name="resource[system_type]">
             <option value=""></option>
+            <option value="custom_resource">{{ localize 'FvttPartyResources.ResourceForm.Resources.Custom' }}</option>
             {{#if dnd5e }}
             <option value="dnd_fifth_gold">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Gold' }}</option>
             <option value="dnd_fifth_item">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.Item' }}</option>
@@ -23,13 +24,40 @@
         </div>
         <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResourceHint' }}</p>
       </div>
+
+      {{#unless is_regular_resource}}
+      <div class="form-group">
+        <label for="view_type">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ViewType' }}</label>
+        <div class="form-fields">
+          <select id="view_type" name="resource[view_type]">
+            <option value="count" {{#if (eq view_type "count")}}selected{{/if}}>{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.CountView' }}</option>
+            <option value="statistics" {{#if (eq view_type "statistics")}}selected{{/if}}>{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.StatisticsView' }}</option>
+          </select>
+        </div>
+      </div>
+      
+      {{#if (eq view_type "statistics")}}
+      <div class="form-group">
+        <div class="form-fields radio-group">
+          <div class="radio-option">
+            <input type="radio" id="normal_view" name="resource[view_detail]" value="normal" {{#if (eq view_detail "normal")}}checked{{/if}}>
+            <label for="normal_view">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.StatisticsViews.NormalView' }}</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="detailed_view" name="resource[view_detail]" value="detailed" {{#if (eq view_detail "detailed")}}checked{{/if}}>
+            <label for="detailed_view">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.StatisticsViews.DetailedView' }}</label>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+      {{/unless}}
   
       <div class="form-group hidden">
         <label for="system_name">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemName' }}</label>
         <div class="form-fields">
           <input type="text" id="system_name" name="resource[system_name]" value="{{ system_name }}" data-dtype="String">
         </div>
-        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.Dnd5eResources.ItemNameHint' }}</p>
+        <p class="notes">{{ localize 'FvttPartyResourcess.ResourceForm.Dnd5eResources.ItemNameHint' }}</p>
       </div>
   
       <div class="form-group">
@@ -83,6 +111,16 @@
         </div>
         <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.MaxValueHint' }}</p>
       </div>
+
+      {{#if is_regular_resource}}
+      <div class="form-group">
+        <label for="step">{{ localize 'FvttPartyResources.ResourceForm.Step' }}</label>
+        <div class="form-fields">
+          <input type="number" id="step" name="resource[step]" value="{{ step }}" data-dtype="Number">
+        </div>
+        <p class="notes">{{ localize 'FvttPartyResources.ResourceForm.StepHint' }}</p>
+      </div>
+      {{/if}}
     {{/if}}
     {{#if is_gm}}
       <h2>{{ localize 'FvttPartyResources.ResourceForm.Headers.Notifications' }}</h2>
@@ -136,7 +174,6 @@
         <button id="configure-permissions">{{ localize 'FvttPartyResources.ResourceForm.AllowPlayersToModifySettings' }}</button>
         {{/unless}}
       </div>
-    </section>
   
     <hr>
   {{/if}}
@@ -154,6 +191,12 @@
         {{localize 'FvttPartyResources.ResourceForm.CreateResource'}}
         {{/if}}
       </button>
+      {{#if identifier}}
+      <button type="delete" class="delete">
+        <i class="fas fa-trash"></i>
+        {{localize 'FvttPartyResources.Dashboard.DeleteButtonTitle'}}
+      </button>
+      {{/if}}
     </footer>
   
   </form>
