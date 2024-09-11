@@ -44,6 +44,18 @@ export default class ResourceForm extends FormApplication {
       }
     })
 
+    html.find('#system_type').on('change', (event) => {
+      const systemType = event.target.value;
+  
+      if (systemType === 'custom_resource') {
+        html.find('#view_type').closest('.form-group').hide();
+        html.find('#identifier').closest('.form-group').hide();
+      } else {
+        html.find('#view_type').closest('.form-group').show();
+        html.find('#identifier').closest('.form-group').show();
+      }
+    })
+
     html.on('keyup', '#name, #identifier', event => {
       if(this.id == 'edit-resource-form') return
 
